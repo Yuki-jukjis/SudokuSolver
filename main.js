@@ -97,12 +97,13 @@ function parse() {
   return board;
 }
 
+//打ち切り数
+var num = 3;
 //
 function solve(board) {
   var answers = [];
-
   //打ち切り条件
-  while(answers.length < 40) {
+  while(answers.length < num) {
     var result = board.searchMinimum();
     //すべて埋まっていたら、それを解答に追加して終了
     if(result.min == 10) {
@@ -125,6 +126,8 @@ function solve(board) {
         board2.put(result.x, result.y, result.values[i]);
         //得た答えを配列に追加
         Array.prototype.push.apply(answers, solve(board2));
+        //打ち切り
+        if(num <= answers.length) break;
       }
       break;
     }
@@ -133,6 +136,8 @@ function solve(board) {
 }
 
 function main() {
+  num = parseInt($('num').value);
+  if(isNaN(num))num = 3;
   try {
     var board = parse();
     try {
