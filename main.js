@@ -50,6 +50,8 @@ function put(board, x, y, value) {
 
   board[x][y].possibility = new Array(9).fill(false);
   board[x][y].possibility[value] = true;
+
+  return board;
 }
 //不確定のセルの中で、可能性が一番少ないセルを探す。
 //すべて埋まっていたらminが10
@@ -114,10 +116,8 @@ function solve(board) {
     //その他の場合は総当たり
     else {
       for(var i=0; i<result.values.length; i++) {
-        var board2 = clone(board);
-        put(board2, result.x, result.y, result.values[i]);
         //得た答えを配列に追加
-        Array.prototype.push.apply(answers, solve(board2));
+        Array.prototype.push.apply(answers, solve(put(clone(board), result.x, result.y, result.values[i])));
         //打ち切り
         if(num <= answers.length) break;
       }
